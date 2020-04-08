@@ -3,12 +3,15 @@
 """
 Created on Sun Apr  5 09:10:58 2020
 
-@author: laurieshaw
+Module for visualising Metrica tracking and event data
+
+Data can be found at: https://github.com/metrica-sports/sample-data
+
+@author: Laurie Shaw (@EightyFivePoint)
 """
 
 import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.patches as patches
 
 def plot_pitch( field_dimen = (106.0,68.0), field_color ='green', linewidth=2, markersize=20):
     """ plot_pitch

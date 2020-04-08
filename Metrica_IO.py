@@ -3,7 +3,11 @@
 """
 Created on Sat Apr  4 11:18:49 2020
 
-@author: laurieshaw
+Module for reading in Metrica sample data.
+
+Data can be found at: https://github.com/metrica-sports/sample-data
+
+@author: Laurie Shaw (@EightyFivePoint)
 """
 
 import pandas as pd
