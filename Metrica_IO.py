@@ -70,6 +70,14 @@ def to_metric_coordinates(data,field_dimen=(106.,68.)):
     y_columns = [c for c in data.columns if c[-1].lower()=='y']
     data[x_columns] = ( data[x_columns]-0.5 ) * field_dimen[0]
     data[y_columns] = ( data[y_columns]-0.5 ) * field_dimen[1]
+    ''' 
+    ------------ ***NOTE*** ------------
+    Metrica actually define the origin at the *top*-left of the field, not the bottom-left, as discussed in the YouTube video. 
+    The line above should therefore be:
+    > data[y_columns] = -1 * ( data[y_columns]-0.5 ) * field_dimen[1]
+    I've left it as it was so that the plots this script produces are the same as in the video.
+    ------------ ********** ------------
+    '''
     return data
 
 def to_single_playing_direction(home,away,events):

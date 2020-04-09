@@ -136,7 +136,6 @@ def plot_frame( hometeam, awayteam, figax=None, team_colors=('r','b'), field_dim
         if include_player_velocities:
             vx_columns = ['{}_vx'.format(c[:-2]) for c in x_columns] # column header for player x positions
             vy_columns = ['{}_vy'.format(c[:-2]) for c in y_columns] # column header for player y positions
-            print( team[vx_columns], team[vy_columns] )
             ax.quiver( team[x_columns], team[y_columns], team[vx_columns], team[vy_columns], color=color, scale_units='inches', scale=10.,width=0.002,headlength=5,headwidth=3,)
     # plot ball
     ax.plot( hometeam['ball_x'], hometeam['ball_y'], 'ko', MarkerSize=6, alpha=1.0, LineWidth=0)
