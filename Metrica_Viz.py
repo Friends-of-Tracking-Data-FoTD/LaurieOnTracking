@@ -145,19 +145,39 @@ def plot_frame( hometeam, awayteam, figax=None, team_colors=('r','b'), field_dim
     ax.plot( hometeam['ball_x'], hometeam['ball_y'], 'ko', MarkerSize=6, alpha=1.0, LineWidth=0)
     return fig,ax
     
-def save_match_clip(hometeam,awayteam,fpath,figax=None,fname='clip_test',frames_per_second=25, team_colors=('r','b'), field_dimen = (106.0,68.0), include_player_velocities=False, PlayerMarkerSize=10, PlayerAlpha=0.7):
-    """ plot_frame( hometeam, awayteam )
-    saves a movie of frames with filename 'fname' in directory 'fpath'
+def save_match_clip(hometeam,awayteam, fpath, fname='clip_test', figax=None, frames_per_second=25, team_colors=('r','b'), field_dimen = (106.0,68.0), include_player_velocities=False, PlayerMarkerSize=10, PlayerAlpha=0.7):
+    """ save_match_clip( hometeam, awayteam, fpath )
+    
+    Generates a movie from Metrica tracking data, saving it in the 'fpath' directory with name 'fname'
+    
+    Parameters
+    -----------
+        hometeam: home team tracking data DataFrame. Movie will be created from all rows in the DataFrame
+        awayteam: away team tracking data DataFrame. The indices *must* match those of the hometeam DataFrame
+        fpath: directory to save the movie
+        fname: movie filename. Default is 'clip_test.mp4'
+        fig,ax: Can be used to pass in the (fig,ax) objects of a previously generated pitch. Set to (fig,ax) to use an existing figure, or None (the default) to generate a new pitch plot,
+        frames_per_second: frames per second to assume when generating the movie. Default is 25.
+        team_colors: Tuple containing the team colors of the home & away team. Default is 'r' (red, home team) and 'b' (blue away team)
+        field_dimen: tuple containing the length and width of the pitch in meters. Default is (106,68)
+        include_player_velocities: Boolean variable that determines whether player velocities are also plotted (as quivers). Default is False
+        PlayerMarkerSize: size of the individual player marlers. Default is 10
+        PlayerAlpha: alpha (transparency) of player markers. Defaault is 0.7
+        
+    Returrns
+    -----------
+       fig,ax : figure and aixs objects (so that other data can be plotted onto the pitch)
+
     """
     # check that indices match first
     assert np.all( hometeam.index==awayteam.index ), "Home and away team Dataframe indices must be the same"
-    # in which case use index
+    # in which case use home team index
     index = hometeam.index
     # Set figure and movie settings
     FFMpegWriter = animation.writers['ffmpeg']
     metadata = dict(title='Tracking Data', artist='Matplotlib', comment='Metrica tracking data clip')
     writer = FFMpegWriter(fps=frames_per_second, metadata=metadata)
-    fname = fpath + fname + '.mp4' # path and filename
+    fname = fpath + '/' +  fname + '.mp4' # path and filename
     # create football pitch
     if figax is None:
         fig,ax = plot_pitch(field_dimen=field_dimen)
@@ -168,7 +188,7 @@ def save_match_clip(hometeam,awayteam,fpath,figax=None,fname='clip_test',frames_
     print("Generating movie...",end='')
     with writer.saving(fig, fname, 100):
         for i in index:
-            figobjs = []
+            figobjs = [] # this is used to collect up all the axis objects so that they can be deleted after each iteration
             for team,color in zip( [hometeam.loc[i],awayteam.loc[i]], team_colors) :
                 x_columns = [c for c in team.keys() if c[-2:].lower()=='_x' and c!='ball_x'] # column header for player x positions
                 y_columns = [c for c in team.keys() if c[-2:].lower()=='_y' and c!='ball_y'] # column header for player y positions
@@ -189,7 +209,7 @@ def save_match_clip(hometeam,awayteam,fpath,figax=None,fname='clip_test',frames_
             objs = ax.text(-2.5,field_dimen[1]/2.+1., timestring, fontsize=14 )
             figobjs.append(objs)
             writer.grab_frame()
-            # Delete player positions in preperation for next iteration
+            # Delete all axis objects (other than pitch lines) in preperation for next frame
             for figobj in figobjs:
                 figobj.remove()
     print("done")
