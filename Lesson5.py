@@ -42,8 +42,8 @@ events = mio.to_metric_coordinates(events)
 tracking_home,tracking_away,events = mio.to_single_playing_direction(tracking_home,tracking_away,events)
 
 # Making a movie of the second home team goal
-PLOTDIR = DATADIR
-mviz.save_match_clip(tracking_home.iloc[73600:73600+500],tracking_away.iloc[73600:73600+500],PLOTDIR,fname='home_goal_2',include_player_velocities=False)
+#PLOTDIR = DATADIR
+#mviz.save_match_clip(tracking_home.iloc[73600:73600+500],tracking_away.iloc[73600:73600+500],PLOTDIR,fname='home_goal_2',include_player_velocities=False)
 
 # Calculate player velocities
 tracking_home = mvel.calc_player_velocities(tracking_home,smoothing=True)
