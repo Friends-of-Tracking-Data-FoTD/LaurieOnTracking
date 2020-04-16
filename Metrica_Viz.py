@@ -247,7 +247,7 @@ def plot_events( events, figax=None, field_dimen = (106.0,68), indicators = ['Ma
         if 'Marker' in indicators:
             ax.plot(  row['Start X'], row['Start Y'], color+marker_style, alpha=alpha )
         if 'Arrow' in indicators:
-            ax.annotate("", xy=row[['End X','End Y']], xytext=row[['Start X','Start Y']], alpha=alpha, arrowprops=dict(arrowstyle="->",color=color),annotation_clip=False)
+            ax.annotate("", xy=row[['End X','End Y']], xytext=row[['Start X','Start Y']], alpha=alpha, arrowprops=dict(alpha=alpha,arrowstyle="->",color=color),annotation_clip=False)
         if annotate:
             textstring = row['Type'] + ': ' + row['From']
             ax.text( row['Start X'], row['Start Y'], textstring, fontsize=10, color=color)

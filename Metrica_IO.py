@@ -62,7 +62,7 @@ def merge_tracking_data(home,away):
     '''
     return home.drop(columns=['ball_x', 'ball_y']).merge( away, left_index=True, right_index=True )
     
-def to_metric_coordinates(data,field_dimen=(106.,68.)):
+def to_metric_coordinates(data,field_dimen=(106.,68.) ):
     '''
     Convert positions from Metrica units to meters (with origin at centre circle)
     '''
@@ -75,7 +75,6 @@ def to_metric_coordinates(data,field_dimen=(106.,68.)):
     Metrica actually define the origin at the *top*-left of the field, not the bottom-left, as discussed in the YouTube video. 
     I've changed the line above to reflect this. It was originally:
     data[y_columns] = ( data[y_columns]-0.5 ) * field_dimen[1]
-    I've left it as it was so that the plots this script produces are the same as in the video.
     ------------ ********** ------------
     '''
     return data
