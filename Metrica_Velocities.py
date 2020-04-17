@@ -52,17 +52,27 @@ def calc_player_velocities(team, smoothing=True, filter_='Savitzky-Golay', windo
 
         if maxspeed>0:
             # remove unsmoothed data points that exceed the maximum speed (these are most likely position errors)
-            raw_speed = np.sqrt( vx.values**2 + vy.values**2 )
-            vx.values[raw_speed>maxspeed] = np.nan
-            vy.values[raw_speed>maxspeed] = np.nan
+            raw_speed = np.sqrt( vx**2 + vy**2 )
+            vx[ raw_speed>maxspeed ] = np.nan
+            vy[ raw_speed>maxspeed ] = np.nan
             
         if smoothing:
-            # calculate first half velocity
-            vx.loc[:second_half_idx] = signal.savgol_filter(vx.loc[:second_half_idx],window_length=window,polyorder=polyorder)
-            vy.loc[:second_half_idx] = signal.savgol_filter(vy.loc[:second_half_idx],window_length=window,polyorder=polyorder)        
-            # calculate second half velocity
-            vx.loc[second_half_idx:] = signal.savgol_filter(vx.loc[second_half_idx:],window_length=window,polyorder=polyorder)
-            vy.loc[second_half_idx:] = signal.savgol_filter(vy.loc[second_half_idx:],window_length=window,polyorder=polyorder)
+            if filter_=='Savitzky-Golay':
+                # calculate first half velocity
+                vx.loc[:second_half_idx] = signal.savgol_filter(vx.loc[:second_half_idx],window_length=window,polyorder=polyorder)
+                vy.loc[:second_half_idx] = signal.savgol_filter(vy.loc[:second_half_idx],window_length=window,polyorder=polyorder)        
+                # calculate second half velocity
+                vx.loc[second_half_idx:] = signal.savgol_filter(vx.loc[second_half_idx:],window_length=window,polyorder=polyorder)
+                vy.loc[second_half_idx:] = signal.savgol_filter(vy.loc[second_half_idx:],window_length=window,polyorder=polyorder)
+            elif filter_=='moving average':
+                ma_window = np.ones( window ) / window 
+                # calculate first half velocity
+                vx.loc[:second_half_idx] = np.convolve( vx.loc[:second_half_idx] , ma_window, mode='same' ) 
+                vy.loc[:second_half_idx] = np.convolve( vy.loc[:second_half_idx] , ma_window, mode='same' )      
+                # calculate second half velocity
+                vx.loc[second_half_idx:] = np.convolve( vx.loc[second_half_idx:] , ma_window, mode='same' ) 
+                vy.loc[second_half_idx:] = np.convolve( vy.loc[second_half_idx:] , ma_window, mode='same' ) 
+                
         
         # put player speed in x,y direction, and total speed back in the data frame
         team[player + "_vx"] = vx
