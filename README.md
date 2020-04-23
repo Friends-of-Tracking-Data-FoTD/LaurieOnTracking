@@ -14,6 +14,7 @@ If you want to run the notebooks for each session, you can either install the re
 | --- | --- |
 | [Lesson 4 - Basic Plotting of Event and Tracking Data](Lesson4.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson4.ipynb) |
 | [Lesson 5 - Advanced Plotting and Summary Statistics](Lesson5.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson5.ipynb) |
+| [Lesson 6 - Pitch Control](Lesson6.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson6.ipynb) |
  
 ### Local installation
 1. Download Anaconda
