@@ -1,0 +1,9 @@
+name: friends-of-tracking-data-env
+channels:
+  - conda-forge
+dependencies:
+  - ipykernel
+  - scipy
+  - numpy
+  - matplotlib
+  - pandas=0.24.2
