@@ -13,6 +13,7 @@ Data can be found at: https://github.com/metrica-sports/sample-data
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.animation as animation
+import Metrica_PitchControl as mpc
 
 
 def plot_pitch( field_dimen = (106.0,68.0), field_color ='green', linewidth=2, markersize=20):
@@ -120,6 +121,7 @@ def plot_frame( hometeam, awayteam, figax=None, team_colors=('r','b'), field_dim
         include_player_velocities: Boolean variable that determines whether player velocities are also plotted (as quivers). Default is False
         PlayerMarkerSize: size of the individual player marlers. Default is 10
         PlayerAlpha: alpha (transparency) of player markers. Defaault is 0.7
+        annotate: Boolean variable that determines with player jersey numbers are added to the plot (default is False)
         
     Returrns
     -----------
@@ -252,6 +254,50 @@ def plot_events( events, figax=None, field_dimen = (106.0,68), indicators = ['Ma
             textstring = row['Type'] + ': ' + row['From']
             ax.text( row['Start X'], row['Start Y'], textstring, fontsize=10, color=color)
     return fig,ax
+
+def plot_pitchcontrol_for_event( event_id, events,  tracking_home, tracking_away, PPCF, xgrid, ygrid, alpha = 0.7, include_player_velocities=True, annotate=False, field_dimen = (106.0,68)):
+    """ plot_pitchcontrol_for_event( event_id, events,  tracking_home, tracking_away, PPCF, xgrid, ygrid )
+    
+    Plots the pitch control surface at the instant of the event given by the event_id. Player and ball positions are overlaid.
+    
+    Parameters
+    -----------
+        event_id: Index (not row) of the event that describes the instant at which the pitch control surface should be calculated
+        events: Dataframe containing the event data
+        tracking_home: (entire) tracking DataFrame for the Home team
+        tracking_away: (entire) tracking DataFrame for the Away team
+        PPCF: Pitch control surface (dimen (n_grid_cells_x,n_grid_cells_y) ) containing pitch control probability for the attcking team (as returned by the generate_pitch_control_for_event in Metrica_PitchControl)
+        xgrid: Positions of the pixels in the x-direction (field length) as returned by the generate_pitch_control_for_event in Metrica_PitchControl
+        ygrid: Positions of the pixels in the y-direction (field width) as returned by the generate_pitch_control_for_event in Metrica_PitchControl
+        alpha: alpha (transparency) of player markers. Default is 0.7
+        include_player_velocities: Boolean variable that determines whether player velocities are also plotted (as quivers). Default is False
+        annotate: Boolean variable that determines with player jersey numbers are added to the plot (default is False)
+        field_dimen: tuple containing the length and width of the pitch in meters. Default is (106,68)
+        
+    Returrns
+    -----------
+       fig,ax : figure and aixs objects (so that other data can be plotted onto the pitch)
+
+    """    
+
+    # pick a pass at which to generate the pitch control surface
+    pass_frame = events.loc[event_id]['Start Frame']
+    pass_team = events.loc[event_id].Team
+    
+    # plot frame and event
+    fig,ax = plot_pitch(field_color='white', field_dimen = field_dimen)
+    plot_frame( tracking_home.loc[pass_frame], tracking_away.loc[pass_frame], figax=(fig,ax), PlayerAlpha=alpha, include_player_velocities=include_player_velocities, annotate=annotate )
+    plot_events( events.loc[event_id:event_id], figax = (fig,ax), indicators = ['Marker','Arrow'], annotate=False, color= 'k', alpha=1 )
+    
+    # plot pitch control surface
+    if pass_team=='Home':
+        cmap = 'bwr'
+    else:
+        cmap = 'bwr_r'
+    ax.imshow(np.flipud(PPCF), extent=(np.amin(xgrid), np.amax(xgrid), np.amin(ygrid), np.amax(ygrid)),interpolation='hanning',vmin=0.0,vmax=1.0,cmap=cmap,alpha=0.5)
+    
+    return fig,ax
+
 
 
 
