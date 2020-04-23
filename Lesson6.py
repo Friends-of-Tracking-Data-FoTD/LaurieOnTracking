@@ -7,7 +7,7 @@ Script for lesson 6 of "Friends of Tracking" #FoT
 
 Data can be found at: https://github.com/metrica-sports/sample-data
 
-Accompanying video tutorials can be found here: 
+Accompanying video tutorials can be found here: https://www.youtube.com/watch?v=5X1cSehLg6s
 
 GitHub repo: https://github.com/Friends-of-Tracking-Data-FoTD/LaurieOnTracking
 
@@ -22,7 +22,6 @@ import numpy as np
 
 # set up initial path to data
 DATADIR = '/PATH/TO/WHERE/YOU/SAVED/THE/SAMPLE/DATA'
-DATADIR = '/Users/laurieshaw/Documents/Football/Data/TrackingData/Metrica/sample-data-master/data'
 game_id = 2 # let's look at sample match 2
 
 # read in the event data
