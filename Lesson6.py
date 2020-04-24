@@ -42,6 +42,11 @@ tracking_home,tracking_away,events = mio.to_single_playing_direction(tracking_ho
 # Calculate player velocities
 tracking_home = mvel.calc_player_velocities(tracking_home,smoothing=True)
 tracking_away = mvel.calc_player_velocities(tracking_away,smoothing=True)
+# **** NOTE *****
+# if the lines above produce an error (happens for one version of numpy) change them to the lines below:
+# ***************
+#tracking_home = mvel.calc_player_velocities(tracking_home,smoothing=True,filter_='moving_average')
+#tracking_away = mvel.calc_player_velocities(tracking_away,smoothing=True,filter_='moving_average')
 
 """ **** pitch control for passes leading up to goal 2 **** """
 
