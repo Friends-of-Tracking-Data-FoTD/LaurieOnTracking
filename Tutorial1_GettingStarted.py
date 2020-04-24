@@ -3,7 +3,7 @@
 """
 Created on Sun Apr  5 13:19:08 2020
 
-Script for lesson 4 of "Friends of Tracking" #FoT
+Homework answers for lesson 4 of "Friends of Tracking" #FoT
 
 Data can be found at: https://github.com/metrica-sports/sample-data
 
