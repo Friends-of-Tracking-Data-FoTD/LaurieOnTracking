@@ -15,9 +15,9 @@ If you want to run the notebooks for each session, you can either install the re
 
 | Lesson | Binder | Colab |
 | --- | --- | --- |
-| [Lesson 4 - Basic Plotting of Event and Tracking Data](Lesson4.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson4.ipynb) |  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seidlr/LaurieOnTracking/blob/master/notebooks/Lesson4.ipynb) |
-| [Lesson 5 - Advanced Plotting and Summary Statistics](Lesson5.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson5.ipynb) |  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seidlr/LaurieOnTracking/blob/master/notebooks/Lesson5.ipynb) |
-| [Lesson 6 - Pitch Control](Lesson6.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson6.ipynb) |  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seidlr/LaurieOnTracking/blob/master/notebooks/Lesson6.ipynb) |
+| [Lesson 4 - Basic Plotting of Event and Tracking Data](notebooks/Lesson4.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=notebooks/Lesson4.ipynb) |  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seidlr/LaurieOnTracking/blob/master/notebooks/Lesson4.ipynb) |
+| [Lesson 5 - Advanced Plotting and Summary Statistics](notebooks/Lesson5.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=notebooks/Lesson5.ipynb) |  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seidlr/LaurieOnTracking/blob/master/notebooks/Lesson5.ipynb) |
+| [Lesson 6 - Pitch Control](notebooks/Lesson6.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=notebooks/Lesson6.ipynb) |  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seidlr/LaurieOnTracking/blob/master/notebooks/Lesson6.ipynb) |
  
 
 
