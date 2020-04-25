@@ -11,5 +11,7 @@ __pycache__/
 # Mac OS-specific storage files
 .DS_Store
 
+*.profraw
+
 # Own
 data/

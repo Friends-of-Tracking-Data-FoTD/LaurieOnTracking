@@ -9,39 +9,46 @@ Data can be found at: https://github.com/metrica-sports/sample-data
 
 @author: Laurie Shaw (@EightyFivePoint)
 """
-
+import requests
 import pandas as pd
 import csv as csv
 
-def read_match_data(DATADIR,gameid):
+BASE_URL = 'https://raw.githubusercontent.com/metrica-sports/sample-data/master/data/'
+EVENT_URL = 'Sample_Game_{game_id}/Sample_Game_{game_id}_RawEventsData.csv'
+TRACKING_URL = 'Sample_Game_{game_id}/Sample_Game_{game_id}_RawTrackingData_{teamname}_Team.csv'
+
+def read_match_data(game_id):
     '''
-    read_match_data(DATADIR,gameid):
+    read_match_data(gameid):
     read all Metrica match data (tracking data for home & away teams, and ecvent data)
     '''
-    tracking_home = tracking_data(DATADIR,gameid,'Home')
-    tracking_away = tracking_data(DATADIR,gameid,'Away')
-    events = read_event_data(DATADIR,gameid)
+    tracking_home = read_tracking_data(game_id, 'Home')
+    tracking_away = read_tracking_data(game_id, 'Away')
+    events = read_event_data(game_id)
     return tracking_home,tracking_away,events
 
-def read_event_data(DATADIR,game_id):
+def read_event_data(game_id):
     '''
-    read_event_data(DATADIR,game_id):
+    read_event_data(game_id):
     read Metrica event data  for game_id and return as a DataFrame
     '''
-    eventfile = '/Sample_Game_%d/Sample_Game_%d_RawEventsData.csv' % (game_id,game_id) # filename
-    events = pd.read_csv('{}/{}'.format(DATADIR, eventfile)) # read data
+    url = BASE_URL + EVENT_URL
+    events = pd.read_csv(url.format(game_id=game_id)) # read data
     return events
 
-def tracking_data(DATADIR,game_id,teamname):
+def read_tracking_data(game_id,teamname):
     '''
-    tracking_data(DATADIR,game_id,teamname):
+    read_tracking_data(game_id,teamname):
     read Metrica tracking data for game_id and return as a DataFrame. 
     teamname is the name of the team in the filename. For the sample data this is either 'Home' or 'Away'.
     '''
-    teamfile = '/Sample_Game_%d/Sample_Game_%d_RawTrackingData_%s_Team.csv' % (game_id,game_id,teamname)
-    # First:  deal with file headers so that we can get the player names correct
-    csvfile =  open('{}/{}'.format(DATADIR, teamfile), 'r') # create a csv file reader
-    reader = csv.reader(csvfile) 
+
+    url  = BASE_URL + TRACKING_URL
+    url = url.format(game_id=game_id, teamname=teamname)
+    response = requests.get(url)        
+    decoded = response.content.decode('utf-8')
+
+    reader = csv.reader(decoded.splitlines()) 
     teamnamefull = next(reader)[3].lower()
     print("Reading team: %s" % teamnamefull)
     # construct column names
@@ -53,7 +60,7 @@ def tracking_data(DATADIR,game_id,teamname):
     columns[-2] = "ball_x" # column headers for the x & y positions of the ball
     columns[-1] = "ball_y"
     # Second: read in tracking data and place into pandas Dataframe
-    tracking = pd.read_csv('{}/{}'.format(DATADIR, teamfile), names=columns, index_col='Frame', skiprows=3)
+    tracking = pd.read_csv(url, names=columns, index_col='Frame', skiprows=3)
     return tracking
 
 def merge_tracking_data(home,away):

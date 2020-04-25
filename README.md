@@ -10,16 +10,18 @@ To create movies from the tracking data you'll need to have ffmpeg installed. Yo
 ## Notebooks
 If you want to run the notebooks for each session, you can either install the repository locally or run it directly in Binder.
 
-| Lesson | Binder |
-| --- | --- |
-| [Lesson 4 - Basic Plotting of Event and Tracking Data](Lesson4.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson4.ipynb) |
-| [Lesson 5 - Advanced Plotting and Summary Statistics](Lesson5.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson5.ipynb) |
-| [Lesson 6 - Pitch Control](Lesson6.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson6.ipynb) |
+| Lesson | Binder | Colab |
+| --- | --- | --- |
+| [Lesson 4 - Basic Plotting of Event and Tracking Data](Lesson4.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson4.ipynb) |  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seidlr/LaurieOnTracking/blob/master/notebooks/Lesson4.ipynb) |
+| [Lesson 5 - Advanced Plotting and Summary Statistics](Lesson5.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson5.ipynb) |  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seidlr/LaurieOnTracking/blob/master/notebooks/Lesson5.ipynb) |
+| [Lesson 6 - Pitch Control](Lesson6.ipynb) | [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/seidlr/LaurieOnTracking/master?filepath=Lesson6.ipynb) |  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/seidlr/LaurieOnTracking/blob/master/notebooks/Lesson6.ipynb) |
  
+
+
 ### Local installation
 1. Download Anaconda
 2. Clone repository
-3. Create environment `friends-of-tracking-data-env`:
+3. Create environment `fotd-laurie-on-tracking`:
 ```
 conda env update
 ```
@@ -27,3 +29,4 @@ conda env update
 ```
 jupyter notebook
 ```
+5. Select the kernel `fotd-laurie-on-tracking` for your notebook
