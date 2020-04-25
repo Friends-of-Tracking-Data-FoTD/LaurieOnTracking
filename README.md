@@ -8,7 +8,10 @@ We'll be updating this repo as the friends of tracking series develops, adding c
 To create movies from the tracking data you'll need to have ffmpeg installed. You can do this by following the instructions here: https://anaconda.org/conda-forge/ffmpeg (you may need to restart python afterwards).
 
 ## Notebooks
-If you want to run the notebooks for each session, you can either install the repository locally or run it directly in Binder.
+If you want to run the notebooks for each session, you can either install the repository locally or run it directly on Binder or Google Colab. In case you do not know, use Google Colab!  
+- Run each cell in the notebook and ignore the warning about the unknown environment.
+- The data is downloaded directly from Metricas repository.  
+- Give it some time when it says "Readining team home" in a cell.
 
 | Lesson | Binder | Colab |
 | --- | --- | --- |
