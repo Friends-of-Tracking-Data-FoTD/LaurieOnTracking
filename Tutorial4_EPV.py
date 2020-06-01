@@ -127,13 +127,6 @@ fig,ax = mviz.plot_EPV_for_event( event_number, events,  tracking_home, tracking
 fig.suptitle('Pass EPV added: %1.3f' % EEPV_added, y=0.95 )
 mviz.plot_pitchcontrol_for_event( event_number, events,  tracking_home, tracking_away, PPCF, annotate=True )
 
-# low value pass option
-event_number = 29
-EEPV_added, EPV_diff = mepv.calculate_epv_added( event_number, events, tracking_home, tracking_away, GK_numbers, EPV, params)
-PPCF,xgrid,ygrid = mpc.generate_pitch_control_for_event(event_number, events, tracking_home, tracking_away, params, GK_numbers, field_dimen = (106.,68.,), n_grid_cells_x = 50, offsides=True)
-fig,ax = mviz.plot_EPV_for_event( event_number, events,  tracking_home, tracking_away, PPCF, EPV, annotate=True, autoscale=True )
-fig.suptitle('Pass EPV added: %1.3f' % EEPV_added, y=0.95 )
-mviz.plot_pitchcontrol_for_event( event_number, events,  tracking_home, tracking_away, PPCF, annotate=True )
 
 '''
  # find maximum possible EPV-added for all home team passes (takes a while to run!)
