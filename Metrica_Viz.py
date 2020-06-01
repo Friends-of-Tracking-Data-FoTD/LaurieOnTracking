@@ -7,13 +7,15 @@ Module for visualising Metrica tracking and event data
 
 Data can be found at: https://github.com/metrica-sports/sample-data
 
+UPDATE for tutorial 4: plot_pitchcontrol_for_event no longer requires 'xgrid' and 'ygrid' as inputs. 
+
 @author: Laurie Shaw (@EightyFivePoint)
 """
 
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.animation as animation
-import Metrica_PitchControl as mpc
+import Metrica_IO as mio
 
 
 def plot_pitch( field_dimen = (106.0,68.0), field_color ='green', linewidth=2, markersize=20):
@@ -249,14 +251,14 @@ def plot_events( events, figax=None, field_dimen = (106.0,68), indicators = ['Ma
         if 'Marker' in indicators:
             ax.plot(  row['Start X'], row['Start Y'], color+marker_style, alpha=alpha )
         if 'Arrow' in indicators:
-            ax.annotate("", xy=row[['End X','End Y']], xytext=row[['Start X','Start Y']], alpha=alpha, arrowprops=dict(alpha=alpha,arrowstyle="->",color=color),annotation_clip=False)
+            ax.annotate("", xy=row[['End X','End Y']], xytext=row[['Start X','Start Y']], alpha=alpha, arrowprops=dict(alpha=alpha,width=0.5,headlength=4.0,headwidth=4.0,color=color),annotation_clip=False)
         if annotate:
             textstring = row['Type'] + ': ' + row['From']
             ax.text( row['Start X'], row['Start Y'], textstring, fontsize=10, color=color)
     return fig,ax
 
-def plot_pitchcontrol_for_event( event_id, events,  tracking_home, tracking_away, PPCF, xgrid, ygrid, alpha = 0.7, include_player_velocities=True, annotate=False, field_dimen = (106.0,68)):
-    """ plot_pitchcontrol_for_event( event_id, events,  tracking_home, tracking_away, PPCF, xgrid, ygrid )
+def plot_pitchcontrol_for_event( event_id, events,  tracking_home, tracking_away, PPCF, alpha = 0.7, include_player_velocities=True, annotate=False, field_dimen = (106.0,68)):
+    """ plot_pitchcontrol_for_event( event_id, events,  tracking_home, tracking_away, PPCF )
     
     Plots the pitch control surface at the instant of the event given by the event_id. Player and ball positions are overlaid.
     
@@ -267,12 +269,12 @@ def plot_pitchcontrol_for_event( event_id, events,  tracking_home, tracking_away
         tracking_home: (entire) tracking DataFrame for the Home team
         tracking_away: (entire) tracking DataFrame for the Away team
         PPCF: Pitch control surface (dimen (n_grid_cells_x,n_grid_cells_y) ) containing pitch control probability for the attcking team (as returned by the generate_pitch_control_for_event in Metrica_PitchControl)
-        xgrid: Positions of the pixels in the x-direction (field length) as returned by the generate_pitch_control_for_event in Metrica_PitchControl
-        ygrid: Positions of the pixels in the y-direction (field width) as returned by the generate_pitch_control_for_event in Metrica_PitchControl
         alpha: alpha (transparency) of player markers. Default is 0.7
         include_player_velocities: Boolean variable that determines whether player velocities are also plotted (as quivers). Default is False
         annotate: Boolean variable that determines with player jersey numbers are added to the plot (default is False)
         field_dimen: tuple containing the length and width of the pitch in meters. Default is (106,68)
+        
+    NB: this function no longer requires xgrid and ygrid as an input
         
     Returrns
     -----------
@@ -294,13 +296,98 @@ def plot_pitchcontrol_for_event( event_id, events,  tracking_home, tracking_away
         cmap = 'bwr'
     else:
         cmap = 'bwr_r'
-    ax.imshow(np.flipud(PPCF), extent=(np.amin(xgrid), np.amax(xgrid), np.amin(ygrid), np.amax(ygrid)),interpolation='hanning',vmin=0.0,vmax=1.0,cmap=cmap,alpha=0.5)
-    
+    ax.imshow(np.flipud(PPCF), extent=(-field_dimen[0]/2., field_dimen[0]/2., -field_dimen[1]/2., field_dimen[1]/2.),interpolation='spline36',vmin=0.0,vmax=1.0,cmap=cmap,alpha=0.5)
+
     return fig,ax
 
 
+def plot_EPV_for_event( event_id, events, tracking_home, tracking_away, PPCF, EPV, alpha = 0.7, include_player_velocities=True, annotate=False, autoscale=0.1, contours=False, field_dimen = (106.0,68)):
+    """ plot_EPV_for_event( event_id, events,  tracking_home, tracking_away, PPCF, EPV, alpha, include_player_velocities, annotate, autoscale, contours, field_dimen)
+    
+    Plots the EPVxPitchControl surface at the instant of the event given by the event_id. Player and ball positions are overlaid.
+    
+    Parameters
+    -----------
+        event_id: Index (not row) of the event that describes the instant at which the pitch control surface should be calculated
+        events: Dataframe containing the event data
+        tracking_home: (entire) tracking DataFrame for the Home team
+        tracking_away: (entire) tracking DataFrame for the Away team
+        PPCF: Pitch control surface (dimen (n_grid_cells_x,n_grid_cells_y) ) containing pitch control probability for the attcking team (as returned by the generate_pitch_control_for_event in Metrica_PitchControl)
+        EPV: Expected Possession Value surface. EPV is the probability that a possession will end with a goal given the current location of the ball. 
+             The EPV surface is saved in the FoT github repo and can be loaded using Metrica_EPV.load_EPV_grid()
+        alpha: alpha (transparency) of player markers. Default is 0.7
+        include_player_velocities: Boolean variable that determines whether player velocities are also plotted (as quivers). Default is False
+        annotate: Boolean variable that determines with player jersey numbers are added to the plot (default is False)
+        autoscale: If True, use the max of surface to define the colorscale of the image. If set to a value [0-1], uses this as the maximum of the color scale.
+        field_dimen: tuple containing the length and width of the pitch in meters. Default is (106,68)
+        
+    Returrns
+    -----------
+       fig,ax : figure and aixs objects (so that other data can be plotted onto the pitch)
 
+    """    
 
+    # pick a pass at which to generate the pitch control surface
+    pass_frame = events.loc[event_id]['Start Frame']
+    pass_team = events.loc[event_id].Team
+    
+    # plot frame and event
+    fig,ax = plot_pitch(field_color='white', field_dimen = field_dimen)
+    plot_frame( tracking_home.loc[pass_frame], tracking_away.loc[pass_frame], figax=(fig,ax), PlayerAlpha=alpha, include_player_velocities=include_player_velocities, annotate=annotate )
+    plot_events( events.loc[event_id:event_id], figax = (fig,ax), indicators = ['Marker','Arrow'], annotate=False, color= 'k', alpha=1 )
+       
+    # plot pitch control surface
+    if pass_team=='Home':
+        cmap = 'Reds'
+        lcolor = 'r'
+        EPV = np.fliplr(EPV) if mio.find_playing_direction(tracking_home,'Home') == -1 else EPV
+    else:
+        cmap = 'Blues'
+        lcolor = 'b'
+        EPV = np.fliplr(EPV) if mio.find_playing_direction(tracking_away,'Away') == -1 else EPV
+    
+    EPVxPPCF = PPCF*EPV
+    
+    if autoscale is True:
+        vmax = np.max(EPVxPPCF)*2.
+    elif autoscale>=0 and autoscale<=1:
+        vmax = autoscale
+    else:
+        assert False, "'autoscale' must be either {True or between 0 and 1}"
+        
+    ax.imshow(np.flipud(EPVxPPCF), extent=(-field_dimen[0]/2., field_dimen[0]/2., -field_dimen[1]/2., field_dimen[1]/2.),interpolation='spline36',vmin=0.0,vmax=vmax,cmap=cmap,alpha=0.7)
+    
+    if contours:
+        ax.contour( EPVxPPCF,extent=(-field_dimen[0]/2., field_dimen[0]/2., -field_dimen[1]/2., field_dimen[1]/2.),levels=np.array([0.75])*np.max(EPVxPPCF),colors=lcolor,alpha=1.0)
+    
+    return fig,ax
+
+def plot_EPV(EPV,field_dimen=(106.0,68),attack_direction=1):
+    """ plot_EPV( EPV,  field_dimen, attack_direction)
+    
+    Plots the pre-generated Expected Possession Value surface 
+    
+    Parameters
+    -----------
+        EPV: The 32x50 grid containing the EPV surface. EPV is the probability that a possession will end with a goal given the current location of the ball. 
+             The EPV surface is saved in the FoT github repo and can be loaded using Metrica_EPV.load_EPV_grid()
+        field_dimen: tuple containing the length and width of the pitch in meters. Default is (106,68)
+        attack_direction: Sets the attack direction (1: left->right, -1: right->left)
+            
+    Returrns
+    -----------
+       fig,ax : figure and aixs objects (so that other data can be plotted onto the pitch)
+
+    """    
+    if attack_direction==-1:
+        # flip direction of grid if team is attacking right->left
+        EPV = np.fliplr(EPV)
+    ny,nx = EPV.shape
+    # plot a pitch
+    fig,ax = plot_pitch(field_color='white', field_dimen = field_dimen)
+    # overlap the EPV surface
+    ax.imshow(EPV, extent=(-field_dimen[0]/2., field_dimen[0]/2., -field_dimen[1]/2., field_dimen[1]/2.),vmin=0.0,vmax=0.6,cmap='Blues',alpha=0.6)
+    
 
 
 
