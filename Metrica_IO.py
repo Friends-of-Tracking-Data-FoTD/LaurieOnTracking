@@ -85,7 +85,7 @@ def to_single_playing_direction(home,away,events):
     Flip coordinates in second half so that each team always shoots in the same direction through the match.
     '''
     for team in [home,away,events]:
-        second_half_idx = team.Period.idxmax(2)
+        second_half_idx = team.Period.idxmax(axis=0)
         columns = [c for c in team.columns if c[-1].lower() in ['x','y']]
         team.loc[second_half_idx:,columns] *= -1
     return home,away,events
