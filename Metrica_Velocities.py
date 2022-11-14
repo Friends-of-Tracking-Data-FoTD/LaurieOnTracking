@@ -42,7 +42,7 @@ def calc_player_velocities(team, smoothing=True, filter_='Savitzky-Golay', windo
     dt = team['Time [s]'].diff()
     
     # index of first frame in second half
-    second_half_idx = team.Period.idxmax(2)
+    second_half_idx = team.Period.idxmax(0)
     
     # estimate velocities for players in team
     for player in player_ids: # cycle through players individually
